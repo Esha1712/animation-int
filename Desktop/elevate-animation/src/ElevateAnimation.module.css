@@ -1,0 +1,177 @@
+/* ElevateAnimation.module.css */
+
+/* --- Global Container Styles --- */
+.animationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- Shape Container (The element that handles the final lift) --- */
+.shapeWrapper {
+  position: relative;
+  width: 200px; /* Base container width */
+  height: 200px;
+  /* Final upward lift animation */
+  animation: final-lift 4.0s forwards; 
+}
+
+/* --- The Funnel Shape (Curved Inverse Cone/Cup) --- */
+.funnel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 80px;
+}
+
+/* 1. Funnel Border (The actual visible shape) */
+.funnel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 4px solid white;
+  
+  /* Creates the curved inverse cone shape */
+  border-radius: 50% / 0 0 40% 40%; /* Curved bottom */
+  clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%); /* Defines top and bottom width */
+  box-sizing: border-box; /* Ensures border is inside the dimensions */
+}
+
+/* 2. Funnel Fill (The left-to-right wipe effect) */
+.funnel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white; 
+  
+  /* Must match the border shape exactly */
+  border-radius: 50% / 0 0 40% 40%;
+  clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+  
+  transform: scaleX(0); 
+  transform-origin: left center; /* Wipe from the left */
+  animation: funnel-fill-wipe 4.0s forwards;
+}
+
+/* --- The Star Shape (Final position is over the Funnel's opening) --- */
+.star {
+  position: absolute;
+  top: 0px; 
+  left: 0px; 
+  width: 25px; 
+  height: 25px; 
+  background: white;
+  filter: drop-shadow(0 0 5px white);
+  clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
+  transform-origin: center;
+  animation: star-motion 4.0s forwards; 
+}
+
+/* --- The Text --- */
+/* --- The Text (FINAL CORRECTION) --- */
+.elevateText {
+  color: white;
+  font-family: 'Arial Black', sans-serif;
+  font-size: 2.5rem; 
+  letter-spacing: 0.4em;
+  white-space: nowrap; /* CRITICAL: Prevents line wrapping */
+  opacity: 0;
+  
+  /* Positioning the text horizontally and beneath the funnel */
+  position: absolute; 
+  
+  /*
+     The Funnel is centered at 50%/50% within the 200px wrapper.
+     The funnel is 80px tall. It ends at 50% + 40px (half its height).
+     We want the text to start 20px below that point.
+     50% + 40px + 20px = 60% relative to the 200px wrapper center.
+     A simpler approach is to set the top position based on the funnel's position.
+     The Funnel's top is at 50% - 40px (approx 60px from wrapper top).
+     We will calculate the top position based on the funnel's coordinates.
+  */
+  
+  /* Since the funnel's center is at 50%/50% and its height is 80px, its bottom is at 
+     50% + 40px = 90px from the wrapper top. 
+     We set the text's top to 90px + 20px (gap) = 110px from the wrapper top.
+     (200px total height, so 110px is 55% from the top, which is below the funnel).
+  */
+  top: 110px; /* Positions it 20px below the funnel base */
+  left: 50%;
+  
+  transform: translateX(-50%); /* Centers the horizontal text */
+  
+  animation: text-reveal 4.0s forwards; 
+}
+
+/* --- Keyframes (The Animation Sequence) --- */
+
+/* 1. Star Motion: Rotate, Translate, and Converge */
+@keyframes star-motion {
+  0% { transform: translate(-100px, 100px) scale(0.5) rotate(0deg); opacity: 0; }
+  10% { transform: translate(-30px, 70px) scale(1) rotate(180deg); opacity: 1; } /* Entrance */
+  
+  /* Convergence Point: Settles *inside* the funnel opening (25%) */
+  25% { transform: translate(87px, 75px) scale(3) rotate(360deg); } 
+  
+  /* Hold Star in place */
+  90% { transform: translate(87px, 75px) scale(3) rotate(360deg); } 
+
+  100% { opacity: 0; } 
+}
+
+/* 2. Funnel Fill: Left-to-Right Wipe (Must align with star convergence) */
+@keyframes funnel-fill-wipe {
+  0% { transform: scaleX(0); }
+  
+  /* Wipe starts just before star settles (10%) */
+  10% { transform: scaleX(0); } 
+  
+  /* Wipe finishes (30%) */
+  30% { transform: scaleX(1); } 
+  
+  /* Hold filled state */
+  90% { transform: scaleX(1); }
+  
+  100% { transform: scaleX(0); }
+}
+
+/* 3. Text Reveal: Fade in and move up */
+/* 3. Text Reveal: Fade in and move up (REVISED) */
+/* 3. Text Reveal: Fade in and move up (REVISED) */
+@keyframes text-reveal {
+  0% { opacity: 0; transform: translateX(-50%) translateY(30px); } /* Start below final position */
+  
+  /* Wait for funnel fill to finish (40%) */
+  40% { opacity: 0; transform: translateX(-50%) translateY(30px); } 
+  
+  /* Text appears in final position (50%): The 'translateY' resets to 0, leaving only the 
+     horizontal centering (translateX(-50%)) and the static 'top: 110px' position to place it. */
+  50% { opacity: 1; transform: translateX(-50%) translateY(0); } 
+  
+  /* Hold until final lift */
+  90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  
+  100% { opacity: 0; }
+}
+
+/* 4. Final Upward Lift of the whole composition (Wrapper) */
+@keyframes final-lift {
+  0% { transform: translateY(0); }
+  80% { transform: translateY(0); } /* Hold until text is fully revealed */
+  
+  /* Final upward movement (80% to 100%) */
+  100% { transform: translateY(-50px); } 
+}
