@@ -17,8 +17,7 @@
   position: relative;
   width: 200px; 
   height: 200px;
-  /* Applying the lift to the wrapper, which is centered on the screen */
-  animation: final-lift 4.0s forwards; 
+  animation: final-lift 2.5s forwards, fade-out 2.5s forwards; 
 }
 /* --- The Funnel Shape (Curved Inverse Cone/Cup) --- */
 .funnel {
@@ -113,8 +112,8 @@
   
   /* Hold Star in place (90%) */
   90% { transform: translate(87px, 2.5px) scale(2.8) rotate(360deg); } 
-
-  100% { opacity: 0; } 
+  /* CRITICAL CHANGE: Hold visibility */
+  100% { transform: translate(87px, 2.5px) scale(2.8) rotate(360deg); opacity: 1; }
 }
 
 /* 2. Funnel Fill: Left-to-Right Wipe (Must align with star convergence) */
@@ -137,21 +136,37 @@
 /* 3. Text Reveal: Fade in and move up (REVISED) */
 /* 3. Text Reveal: Fade in and move up (REVISED) */
 @keyframes text-reveal {
-  /* ... initial states remain intact ... */
+  0% { opacity: 0; transform: translateX(-50%) translateY(30px); }
   
-  /* Text final position: Ensure the text is vertically lower to create a visually cleaner design */
-  50% { opacity: 1; transform: translateX(-50%) translateY(0); } 
+  /* Wait for funnel fill to finish (35%) */
+  35% { opacity: 0; transform: translateX(-50%) translateY(30px); } 
   
-  /* Hold (90%) */
+  /* Text appears immediately (45%) */
+  45% { opacity: 1; transform: translateX(-50%) translateY(0); } 
+  
+  /* Hold until final lift */
   90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  
-  /* ... end remains the same ... */
+  /* CRITICAL CHANGE: Hold visibility */
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* 4. Final Upward Lift of the whole composition (Wrapper) */
 @keyframes final-lift {
-  /* ... (no change needed) ... */
   0% { transform: translateY(0); }
-  80% { transform: translateY(0); }
-  100% { transform: translateY(-50px); } 
+  
+  /* Lift starts later (70%) and finishes earlier (90%) */
+  70% { transform: translateY(0); }
+  90% { transform: translateY(-50px); } /* Lift finishes */
+  100% { transform: translateY(-50px); } /* Hold lift position */
+}
+
+/* 5. NEW KEYFRAME: Fade out the entire wrapper after the lift */
+@keyframes fade-out {
+  0% { opacity: 1; } 
+  
+  /* Hold opacity until the lift is finished (90%) */
+  90% { opacity: 1; } 
+  
+  /* Fade out over the last 10% (0.5 seconds) */
+  100% { opacity: 0; }
 }
