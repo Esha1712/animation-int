@@ -7,7 +7,7 @@ const ElevateAnimation = () => {
         <div className={styles.animationContainer}>
             <div key={key} className={styles.shapeWrapper}>
                 <div className={styles.star}></div>
-                <div>FUNNEL</div>
+                <div className={styles.funnel}></div>
                 <h1>E L E V A T E</h1>
             </div>
         </div>

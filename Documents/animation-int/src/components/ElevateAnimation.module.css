@@ -30,10 +30,87 @@
   animation: star-motion 4.0s forwards;
 }
 
+.funnel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 80px;
+}
+
+.funnel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 4px solid white;
+  box-sizing: border-box;
+  border-radius: 20% 20% 0 0 / 100% 100% 0 0; /* Achieving the exact funnel shape is bit difficult 😕 */
+    clip-path: polygon(
+    10% 0%,
+    90% 0%,
+    65% 100%,
+    35% 100% 
+  ); /* Will again work on this funnel to make it same as the reference */
+}
+
+.funnel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white; 
+  border-radius: 20% 20% 0 0 / 100% 100% 0 0;
+  clip-path: polygon(
+    10% 0%, 
+    90% 0%, 
+    65% 100%, 
+    35% 100%
+  );
+  
+  transform: scaleX(0); 
+  transform-origin: left center;
+  animation: funnel-fill-wipe 4.0s forwards;
+}
+
 @keyframes star-motion {
     0% { transform: translate(-100px, 100px) scale(0.5) rotate(0deg) opacity(0); } /* Starting from the left screen, the star is small and invisible */
     10% { transform: translate(-30px, 70px) scale(1) rotate(180deg); opacity: 1; } /* Starting from the left screen, the star grows and starts its visibility */
     25% { transform: translate(87px, 2.5px) scale(2.8) rotate(360deg); } /* The star reaches the center of the screen, growing larger. THE CENTER IS DEFINED WITH A FORMULA -Target Left Edge = Wrapper Center - Star Half-Width AND THEN ADJUSTED.  */
     90% { transform: translate(87px, 2.5px) scale(2.8) rotate(360deg); } /* Holds still in the center like a logo until the ELEVATE text comes in */
     100% { transform: translate(87px, 2.5px) scale(2.8) rotate(360deg); opacity: 1; } /* lifting up the star - it should be visible until the end */
+}
+
+@keyframes funnel-fill-wipe {
+  0% { transform: scaleX(0); }
+  10% { transform: scaleX(0); }
+  30% { transform: scaleX(1); }
+  90% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+
+@keyframes text-reveal {
+  0% { opacity: 0; transform: translateX(-50%) translateY(30px); }
+  35% { opacity: 0; transform: translateX(-50%) translateY(30px); }
+  45% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes final-lift {
+  0% { transform: translateY(0); }
+  45% { transform: translateY(0); }
+  80% { transform: translateY(-50px); }
+  100% { transform: translateY(-50px); } 
+}
+
+@keyframes fade-out {
+  0% { opacity: 1; }
+  45% { opacity: 1; }
+  100% { opacity: 0; } 
 }
