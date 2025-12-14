@@ -27,7 +27,7 @@ Great challenge to us.
 
 Installation and Running
 # Clone the repository
-git clone [Your Repo URL]
+git clone https://github.com/Esha1712/animation-int
 cd elevate-animation
 
 # Install dependencies
