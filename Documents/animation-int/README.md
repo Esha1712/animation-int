@@ -1,73 +1,37 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains a high-performance, purely CSS-driven animation implemented in React, designed to recreate the specific visual and timing requirements demonstrated in the reference video.
 
-Currently, two official plugins are available:
+Code Quality: Uses React components and CSS Modules for encapsulation. Clear separation of JSX logic and @keyframes timing.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Performance: Entirely driven by pure CSS Keyframes and transform properties, ensuring native GPU acceleration and instant load.
 
-## React Compiler
+# Technology Stack
+Framework: React (Vite/Next.js Compatible)
+Styling: CSS Modules (.module.css)
+Animation: Pure CSS Keyframes (@keyframes) and transform properties.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Pure CSS Keyframes
+Performance Focus: Ensures the animation runs on the browser's native thread (GPU), providing maximum smoothness and instant load time. Avoids the overhead of heavy JS animation libraries (e.g., Framer Motion).
 
-## Expanding the ESLint configuration
+# No Dynamic Imports
+The entire component and its assets are synchronously loaded on initial page load.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Key-Based Re-triggering
+The animation uses a unique key={index} prop on the wrapper. Updating the key in state forces React to destroy and remount the component, which in turn triggers the CSS animation: ... forwards rule again, meeting the requirement to re-trigger via CSS/React state, not imperative JavaScript DOM manipulation.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Knowledge gained after this project
+In depth knowledge gaining of clip-path and keyframes.
+Cut edge shaping of each object (Still learning).
+Great challenge to us.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Installation and Running
+# Clone the repository
+git clone [Your Repo URL]
+cd elevate-animation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+# Install dependencies
+npm install
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+# Run the development server
+npm run dev
