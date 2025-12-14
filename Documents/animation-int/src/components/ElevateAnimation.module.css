@@ -14,6 +14,7 @@
   position: relative;
   width: 200px; 
   height: 200px;
+  animation: final-lift 4.0s forwards, fade-out 4.0s forwards; 
 }
 
 /* First i constructed a normal square box, then using clip-path I am cutting the edges. */
@@ -76,6 +77,20 @@
   transform: scaleX(0); 
   transform-origin: left center;
   animation: funnel-fill-wipe 4.0s forwards;
+}
+
+.elevateText {
+  color: white;
+  font-family: 'Arial Black', sans-serif;
+  font-size: 2.5rem; 
+  letter-spacing: 0.4em;
+  white-space: nowrap;
+  opacity: 0;
+  position: absolute; 
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: text-reveal 4.0s forwards; 
 }
 
 @keyframes star-motion {
